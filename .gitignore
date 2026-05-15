@@ -18,8 +18,8 @@ uploads/*
 *.log
 /var/log/
 
-# PM2
-.pm2/
+# Docker
+.docker/
 
 # OS
 .DS_Store

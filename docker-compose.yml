@@ -1,0 +1,66 @@
+# ─────────────────────────────────────────────────────────────
+# ESNSA Energy Security Portal — Docker Compose
+# Deployment path: /opt/esnsa/
+# ─────────────────────────────────────────────────────────────
+
+services:
+
+  # ── PostgreSQL Database ──────────────────────────────────
+  db:
+    image: postgres:14-alpine
+    container_name: esnsa-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       ${DB_NAME:-esnsa_db}
+      POSTGRES_USER:     ${DB_USER:-esnsa_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - esnsa_pgdata:/var/lib/postgresql/data
+      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    networks:
+      - esnsa_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-esnsa_user} -d ${DB_NAME:-esnsa_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Node.js API ──────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: esnsa-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV:          production
+      PORT:              3031
+      DB_HOST:           db
+      DB_PORT:           5432
+      DB_NAME:           ${DB_NAME:-esnsa_db}
+      DB_USER:           ${DB_USER:-esnsa_user}
+      DB_PASSWORD:       ${DB_PASSWORD}
+      JWT_SECRET:        ${JWT_SECRET}
+      JWT_EXPIRES_IN:    ${JWT_EXPIRES_IN:-8h}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      UPLOAD_PATH:       /app/uploads
+    ports:
+      - "127.0.0.1:3031:3031"   # Bound to localhost only — Apache proxies inbound
+    volumes:
+      - esnsa_uploads:/app/uploads
+    networks:
+      - esnsa_net
+
+volumes:
+  esnsa_pgdata:
+    name: esnsa_pgdata
+  esnsa_uploads:
+    name: esnsa_uploads
+
+networks:
+  esnsa_net:
+    name: esnsa_net
+    driver: bridge
