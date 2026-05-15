@@ -10,10 +10,10 @@
   --border:       #1a2232;
   --border-bright:#2a3a52;
 
-  /* Accent — Gold */
-  --accent:       #d4920a;
-  --accent-bright:#f0aa18;
-  --accent-dim:   #7a5005;
+  /* Accent — Green */
+  --accent:       #00c853;
+  --accent-bright:#69f0ae;
+  --accent-dim:   #007b33;
 
   /* Status colors */
   --green:        #1fba68;
@@ -24,9 +24,9 @@
   --blue-dim:     #1a3a6a;
 
   /* Text */
-  --text:         #b8c8da;
-  --text-dim:     #4a5a6e;
-  --text-bright:  #e0eaf8;
+  --text:         #ffffff;
+  --text-dim:     #6a7a8e;
+  --text-bright:  #ffffff;
 
   /* Fonts */
   --font-display: 'Cinzel', Georgia, serif;

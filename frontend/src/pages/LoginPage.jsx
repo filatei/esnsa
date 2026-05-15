@@ -40,12 +40,12 @@ export default function LoginPage() {
       {/* Scanline */}
       <div style={{
         position:'absolute', left:0, right:0, height:'3px', pointerEvents:'none',
-        background:'linear-gradient(to bottom, transparent, rgba(212,146,10,0.08), transparent)',
+        background:'linear-gradient(to bottom, transparent, rgba(0,200,83,0.08), transparent)',
         animation:'scandown 4s linear infinite',
       }} />
 
       {/* Grid background */}
-      <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', opacity:0.07 }}>
+      <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', opacity:0.07, pointerEvents:'none' }}>
         {Array.from({ length: 30 }, (_, i) => (
           <line key={`h${i}`} x1="0" y1={`${i*3.5}%`} x2="100%" y2={`${i*3.5}%`} stroke="#2a3a52" strokeWidth="0.5" />
         ))}
@@ -71,10 +71,10 @@ export default function LoginPage() {
         <div style={{ textAlign:'center', marginBottom:'32px' }}>
           <div style={{
             width:'64px', height:'64px', borderRadius:'50%',
-            background:'rgba(212,146,10,0.12)', border:'2px solid var(--accent)',
+            background:'rgba(0,200,83,0.12)', border:'2px solid var(--accent)',
             display:'flex', alignItems:'center', justifyContent:'center',
             margin:'0 auto 16px', fontSize:'28px', color:'var(--accent)',
-            boxShadow:'0 0 30px rgba(212,146,10,0.15)',
+            boxShadow:'0 0 30px rgba(0,200,83,0.15)',
           }}>⬡</div>
           <div style={{ fontFamily:'var(--font-display)', fontSize:'11px', letterSpacing:'4px', color:'var(--text-bright)', textTransform:'uppercase', lineHeight:1.6 }}>
             Office of the National Security Adviser
@@ -129,7 +129,7 @@ export default function LoginPage() {
               type="submit"
               disabled={status === 'verifying' || status === 'granted'}
               style={{
-                background: status === 'granted' ? 'rgba(31,186,104,0.15)' : status === 'failed' ? 'rgba(214,58,58,0.15)' : 'rgba(212,146,10,0.12)',
+                background: status === 'granted' ? 'rgba(31,186,104,0.15)' : status === 'failed' ? 'rgba(214,58,58,0.15)' : 'rgba(0,200,83,0.12)',
                 border: `1px solid ${status === 'granted' ? 'var(--green)' : status === 'failed' ? 'var(--red)' : 'var(--accent)'}`,
                 borderRadius:'4px', padding:'13px', width:'100%',
                 color: status === 'granted' ? 'var(--green)' : status === 'failed' ? 'var(--red)' : 'var(--accent)',
