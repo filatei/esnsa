@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name:            'esnsa-api',
     script:          './backend/server.js',
-    cwd:             '/home/ubuntu/esnsa-app',
+    cwd:             '/opt/esnsa',
     env: {
       NODE_ENV: 'production',
     },
