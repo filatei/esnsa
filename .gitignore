@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Build output
+frontend/dist/
+
+# Environment
+.env
+backend/.env
+**/.env
+
+# Uploads (don't commit user files)
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
+/var/log/
+
+# PM2
+.pm2/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
