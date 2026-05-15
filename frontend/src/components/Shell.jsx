@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, AlertTriangle, Map, Users, Radio,
-  FileText, BookOpen, UserCog, ScrollText,
+  FileText, BookOpen, UserCog, ScrollText, ShieldCheck,
 } from 'lucide-react';
 import TopBar from './TopBar';
 import Sidebar from './Sidebar';
@@ -17,6 +17,7 @@ const NAV = [
   { to:'/intel',        icon:Radio,           label:'INTEL' },
   { to:'/brief',        icon:FileText,        label:'BRIEF',  roles:['DIRECTOR','ANALYST'] },
   { to:'/reports',      icon:BookOpen,        label:'REPORTS' },
+  { to:'/admin',        icon:ShieldCheck,     label:'ADMIN',  roles:['ADMIN','DIRECTOR'] },
   { to:'/admin/users',  icon:UserCog,         label:'USERS',  roles:['ADMIN','DIRECTOR'] },
   { to:'/admin/audit',  icon:ScrollText,      label:'AUDIT',  roles:['ADMIN','DIRECTOR'] },
 ];

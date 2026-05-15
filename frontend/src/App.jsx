@@ -12,6 +12,7 @@ import BriefPage       from './pages/BriefPage';
 import ReportsPage     from './pages/ReportsPage';
 import UsersPage       from './pages/UsersPage';
 import AuditPage       from './pages/AuditPage';
+import AdminPage       from './pages/AdminPage';
 
 function ProtectedRoute({ children, roles }) {
   const { isAuthenticated, user } = useAuth();
@@ -32,6 +33,7 @@ function AppRoutes() {
       <Route path="/intel"       element={<ProtectedRoute><IntelPage /></ProtectedRoute>} />
       <Route path="/brief"       element={<ProtectedRoute roles={['DIRECTOR','ANALYST']}><BriefPage /></ProtectedRoute>} />
       <Route path="/reports"     element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
+      <Route path="/admin"       element={<ProtectedRoute roles={['ADMIN','DIRECTOR']}><AdminPage /></ProtectedRoute>} />
       <Route path="/admin/users" element={<ProtectedRoute roles={['ADMIN','DIRECTOR']}><UsersPage /></ProtectedRoute>} />
       <Route path="/admin/audit" element={<ProtectedRoute roles={['ADMIN','DIRECTOR']}><AuditPage /></ProtectedRoute>} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
