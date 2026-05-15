@@ -30,8 +30,8 @@ export default function Sidebar({ collapsed }) {
             <div style={{
               width:'50px', height:'50px', borderRadius:'8px', display:'flex', flexDirection:'column',
               alignItems:'center', justifyContent:'center', gap:'4px',
-              background: isActive ? 'rgba(212,146,10,0.10)' : 'transparent',
-              border: isActive ? '1px solid rgba(212,146,10,0.25)' : '1px solid transparent',
+              background: isActive ? 'rgba(0,200,83,0.10)' : 'transparent',
+              border: isActive ? '1px solid rgba(0,200,83,0.25)' : '1px solid transparent',
               transition:'all 0.15s', cursor:'pointer',
             }}>
               <Icon size={16} color={isActive ? 'var(--accent)' : 'var(--text-dim)'} />

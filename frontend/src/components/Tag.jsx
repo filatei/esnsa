@@ -6,12 +6,12 @@ const COLORS = {
   // Severity
   CRITICAL:    '#d63a3a',
   HIGH:        '#e0981a',
-  MEDIUM:      '#d4920a',
+  MEDIUM:      '#e0981a',
   LOW:         '#1fba68',
   // Status
   ACTIVE:      '#d63a3a',
   MONITORING:  '#e0981a',
-  CONTAINED:   '#d4920a',
+  CONTAINED:   '#e0981a',
   RESOLVED:    '#1fba68',
   STANDBY:     '#e0981a',
   OFFLINE:     '#4a5a6e',
@@ -22,7 +22,7 @@ const COLORS = {
   RESTRICTED:  '#2a7fd4',
   UNCLASSIFIED:'#1fba68',
   // Role
-  DIRECTOR:    '#d4920a',
+  DIRECTOR:    '#00c853',
   ANALYST:     '#2a7fd4',
   OFFICER:     '#1fba68',
   LIAISON:     '#b8c8da',
@@ -33,7 +33,7 @@ const COLORS = {
   FINAL:       '#1fba68',
   GENERATED:   '#2a7fd4',
   REVIEWED:    '#1fba68',
-  SENT:        '#d4920a',
+  SENT:        '#2a7fd4',
   ARCHIVED:    '#4a5a6e',
 };
 

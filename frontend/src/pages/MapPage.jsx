@@ -50,7 +50,7 @@ export default function MapPage() {
             ) : (
               <Panel title="LEGEND">
                 <div style={{ padding:'12px' }}>
-                  {[['CRITICAL','#d63a3a'],['HIGH','#e0981a'],['MEDIUM','#d4920a'],['LOW','#1fba68']].map(([s,c]) => (
+                  {[['CRITICAL','#d63a3a'],['HIGH','#e0981a'],['MEDIUM','#e0981a'],['LOW','#1fba68']].map(([s,c]) => (
                     <div key={s} style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'8px' }}>
                       <div style={{ width:'10px', height:'10px', borderRadius:'50%', background:c }} />
                       <span style={{ fontSize:'10px', color:c }}>{s}</span>

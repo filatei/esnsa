@@ -19,6 +19,13 @@ export function AuthProvider({ children }) {
     return u;
   };
 
+
+  const loginWithToken = (t, u) => {
+    localStorage.setItem('esnsa_token', t);
+    localStorage.setItem('esnsa_user', JSON.stringify(u));
+    setToken(t);
+    setUser(u);
+  };
   const logout = useCallback(async () => {
     try { await api.post('/auth/logout'); } catch (_) {}
     localStorage.removeItem('esnsa_token');
@@ -35,7 +42,7 @@ export function AuthProvider({ children }) {
   }, [token, logout]);
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, token, login, loginWithToken, logout, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

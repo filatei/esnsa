@@ -1,0 +1,21 @@
+# SPA routing – all paths serve index.html
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+# Never cache the HTML entry point
+<FilesMatch "index\.html$">
+  Header always set Cache-Control "no-cache, no-store, must-revalidate"
+  Header always set Pragma "no-cache"
+  Header always set Expires "0"
+</FilesMatch>
+
+# Long-cache hashed JS/CSS assets (Vite adds content hash to filenames)
+<FilesMatch "\.(js|css|woff2|woff|ttf|eot|ico|png|jpg|svg)$">
+  Header always set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-export default function Btn({ children, onClick, color = '#d4920a', size = 'normal', disabled, style, type = 'button' }) {
+export default function Btn({ children, onClick, color = '#00c853', size = 'normal', disabled, style, type = 'button' }) {
   const [hov, setHov] = useState(false);
   const sm = size === 'small';
   return (

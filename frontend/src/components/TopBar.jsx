@@ -30,7 +30,7 @@ export default function TopBar({ threatCount = 0, onMenuToggle }) {
           <button onClick={onMenuToggle} style={{ background:'none', border:'none', color:'var(--text-dim)', cursor:'pointer', fontSize:'18px', display:'none' }} className="mobile-menu-btn">☰</button>
         )}
         {/* Logo */}
-        <div style={{ width:'32px', height:'32px', borderRadius:'50%', background:'rgba(212,146,10,0.15)', border:'2px solid var(--accent)', display:'flex', alignItems:'center', justifyContent:'center', color:'var(--accent)', fontSize:'14px', flexShrink:0 }}>⬡</div>
+        <div style={{ width:'32px', height:'32px', borderRadius:'50%', background:'rgba(0,200,83,0.15)', border:'2px solid var(--accent)', display:'flex', alignItems:'center', justifyContent:'center', color:'var(--accent)', fontSize:'14px', flexShrink:0 }}>⬡</div>
         <div style={{ display:'flex', flexDirection:'column' }}>
           <span style={{ fontFamily:'var(--font-display)', fontSize:'10px', letterSpacing:'3px', color:'var(--text-bright)', textTransform:'uppercase', lineHeight:1.2 }}>
             Office of the National Security Adviser

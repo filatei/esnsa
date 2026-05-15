@@ -151,3 +151,16 @@ CREATE INDEX IF NOT EXISTS idx_audit_user        ON audit_log(user_id);
 CREATE INDEX IF NOT EXISTS idx_audit_created     ON audit_log(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_briefs_generated  ON briefs(generated_at DESC);
 CREATE INDEX IF NOT EXISTS idx_messages_stakeholder ON messages(to_stakeholder);
+
+-- ─── WEBAUTHN / BIOMETRIC CREDENTIALS ───────────────────────────────────────
+CREATE TABLE IF NOT EXISTS webauthn_credentials (
+  id            UUID        PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id       UUID        NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  credential_id TEXT        UNIQUE NOT NULL,
+  public_key    TEXT        NOT NULL,
+  counter       BIGINT      DEFAULT 0,
+  device_type   VARCHAR(50),
+  backed_up     BOOLEAN     DEFAULT false,
+  transports    TEXT[]      DEFAULT '{}',
+  created_at    TIMESTAMPTZ DEFAULT NOW()
+);
