@@ -18,7 +18,7 @@ export default function Panel({ title, badge, children, style, headerActions }) 
           gap:         '8px',
         }}>
           <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
-            <span style={{ fontSize:'10px', fontWeight:'700', letterSpacing:'2.5px', color:'#c0d8ca', textTransform:'uppercase', fontFamily:'var(--font-mono)' }}>
+            <span style={{ fontSize:'11px', fontWeight:'700', letterSpacing:'2px', color:'#d0e8d8', textTransform:'uppercase', fontFamily:'var(--font-mono)' }}>
               {title}
             </span>
             {badge}

@@ -62,16 +62,16 @@ export default function TopBar({ threatCount = 0, onMenuToggle }) {
           </div>
         ) : (
           /* Desktop: full brand */
-          <div style={{ display:'flex', flexDirection:'column', gap:'1px' }}>
+          <div style={{ display:'flex', flexDirection:'column', gap:'2px' }}>
             <span style={{
-              fontFamily:'var(--font-display)', fontSize:'12px', fontWeight:'800',
-              letterSpacing:'2.5px', color:'#ffffff', textTransform:'uppercase', lineHeight:1.3,
+              fontFamily:'var(--font-display)', fontSize:'13px', fontWeight:'800',
+              letterSpacing:'1.5px', color:'#ffffff', textTransform:'uppercase', lineHeight:1.2,
             }}>
               Office of the National Security Adviser
             </span>
             <span style={{
-              fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:'600',
-              letterSpacing:'1.5px', color:'var(--text-dim)', textTransform:'uppercase',
+              fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:'700',
+              letterSpacing:'1px', color:'#9abaa8', textTransform:'uppercase',
             }}>
               Directorate of Energy Security
             </span>

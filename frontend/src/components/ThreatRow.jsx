@@ -18,8 +18,8 @@ export default function ThreatRow({ threat, onClick, active }) {
           <Tag value={threat.severity} />
           <Tag value={threat.status} />
         </div>
-        <div style={{ color:'#ffffff', fontSize:'13px', fontWeight:'600', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', letterSpacing:'0.2px' }}>{threat.type}</div>
-        <div style={{ color:'var(--text-dim)', fontSize:'11px', fontWeight:'500', marginTop:'2px', fontFamily:'var(--font-mono)' }}>{threat.location}{threat.state ? ` · ${threat.state}` : ''}</div>
+        <div style={{ color:'#ffffff', fontSize:'13px', fontWeight:'700', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', letterSpacing:'0.1px' }}>{threat.type}</div>
+        <div style={{ color:'#9abaa8', fontSize:'11px', fontWeight:'600', marginTop:'2px', fontFamily:'var(--font-mono)' }}>{threat.location}{threat.state ? ` · ${threat.state}` : ''}</div>
       </div>
     </div>
   );

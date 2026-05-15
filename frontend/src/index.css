@@ -25,7 +25,7 @@
 
   /* Text */
   --text:         #ffffff;
-  --text-dim:     #8db8a0;
+  --text-dim:     #9abaa8;
   --text-bright:  #ffffff;
 
   /* Fonts */
@@ -43,8 +43,8 @@ html, body, #root {
   color: var(--text);
   font-family: var(--font-body);
   font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-weight: 600;       /* Inter SemiBold — much crisper on dark bg than 500 */
+  letter-spacing: 0.015em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -11,7 +11,7 @@ import { useMobile } from '../hooks/useMobile';
 function MetricCard({ label, value, sub, color = 'var(--accent)' }) {
   return (
     <div style={{ background:'var(--panel)', border:`1px solid var(--border)`, borderRadius:'8px', padding:'14px 16px', borderTop:`2px solid ${color}` }}>
-      <div style={{ fontSize:'10px', fontWeight:'600', letterSpacing:'1.5px', color:'var(--text-dim)', textTransform:'uppercase', marginBottom:'8px', fontFamily:'var(--font-mono)' }}>{label}</div>
+      <div style={{ fontSize:'10px', fontWeight:'700', letterSpacing:'1px', color:'#9abaa8', textTransform:'uppercase', marginBottom:'8px', fontFamily:'var(--font-mono)' }}>{label}</div>
       <div style={{ fontSize:'24px', fontFamily:'var(--font-mono)', fontWeight:'bold', color, lineHeight:1 }}>{value}</div>
       {sub && <div style={{ fontSize:'10px', fontWeight:'500', color:'var(--text-dim)', marginTop:'5px' }}>{sub}</div>}
     </div>
@@ -89,9 +89,9 @@ export default function DashboardPage() {
               <div key={item.id} style={{ padding:'10px 14px', borderBottom:'1px solid var(--border)' }}>
                 <div style={{ display:'flex', gap:'6px', marginBottom:'5px', alignItems:'center' }}>
                   <Tag value={item.classification} />
-                  <span style={{ fontSize:'10px', fontWeight:'600', color:'var(--text-dim)', fontFamily:'var(--font-mono)' }}>{item.source}</span>
+                  <span style={{ fontSize:'10px', fontWeight:'700', color:'#9abaa8', fontFamily:'var(--font-mono)' }}>{item.source}</span>
                 </div>
-                <p style={{ margin:0, fontSize:'12px', fontWeight:'500', fontFamily:'var(--font-body)', lineHeight:1.65, color:'#e8f5ee' }}>{item.content}</p>
+                <p style={{ margin:0, fontSize:'12px', fontWeight:'600', fontFamily:'var(--font-body)', lineHeight:1.65, color:'#ffffff' }}>{item.content}</p>
                 <div style={{ fontSize:'10px', color:'var(--text-dim)', marginTop:'5px', fontFamily:'var(--font-mono)' }}>
                   {new Date(item.logged_at).toLocaleString()}
                 </div>
@@ -121,8 +121,8 @@ export default function DashboardPage() {
                     <span style={{ fontSize:'11px', fontWeight:'700', color:'var(--accent)', fontFamily:'var(--font-mono)', letterSpacing:'1px' }}>{t.incident_id}</span>
                     <Tag value={t.severity} /><Tag value={t.status} />
                   </div>
-                  <div style={{ fontSize:'13px', fontWeight:'600', color:'#ffffff', marginBottom:'4px', letterSpacing:'0.3px' }}>{t.type}</div>
-                  <div style={{ fontSize:'11px', fontWeight:'500', color:'var(--text-dim)', fontFamily:'var(--font-mono)' }}>{t.location}</div>
+                  <div style={{ fontSize:'13px', fontWeight:'700', color:'#ffffff', marginBottom:'4px', letterSpacing:'0.2px' }}>{t.type}</div>
+                  <div style={{ fontSize:'11px', fontWeight:'600', color:'#9abaa8', fontFamily:'var(--font-mono)' }}>{t.location}</div>
                 </div>
               ))}
             </div>

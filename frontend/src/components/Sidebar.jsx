@@ -42,9 +42,9 @@ export default function Sidebar({ collapsed }) {
                 strokeWidth={isActive ? 2 : 1.75}
               />
               <span style={{
-                fontSize:'8px', fontWeight:'700', letterSpacing:'0.8px',
+                fontSize:'9px', fontWeight:'700', letterSpacing:'0.5px',
                 fontFamily:'var(--font-mono)',
-                color: isActive ? 'var(--accent)' : '#4a6a58',
+                color: isActive ? 'var(--accent)' : '#6a8a78',
                 textAlign:'center', lineHeight:1,
                 textShadow: isActive ? '0 0 6px rgba(0,230,118,0.4)' : 'none',
               }}>{label}</span>
