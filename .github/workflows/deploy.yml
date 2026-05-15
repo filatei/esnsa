@@ -3,7 +3,7 @@ name: Deploy ESNSA to Production
 on:
   push:
     branches: [master]
-  workflow_dispatch:   # Allow manual trigger from GitHub UI
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -12,32 +12,28 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      # ── 1. Checkout (needed for changed-files detection) ──
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
-      # ── 2. Detect what changed ───────────────────────────
       - name: Detect changed areas
         id: changes
         run: |
           CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "all")
-          echo "changed=$CHANGED"
 
           if echo "$CHANGED" | grep -qE '^backend/|^Dockerfile|^docker-compose'; then
-            echo "backend=true"  >> $GITHUB_OUTPUT
+            echo "backend=true" >> $GITHUB_OUTPUT
           else
             echo "backend=false" >> $GITHUB_OUTPUT
           fi
 
           if echo "$CHANGED" | grep -qE '^frontend/'; then
-            echo "frontend=true"  >> $GITHUB_OUTPUT
+            echo "frontend=true" >> $GITHUB_OUTPUT
           else
             echo "frontend=false" >> $GITHUB_OUTPUT
           fi
 
-      # ── 3. Deploy backend (Docker rebuild) ───────────────
       - name: Deploy backend
         if: steps.changes.outputs.backend == 'true' || github.event_name == 'workflow_dispatch'
         uses: appleboy/ssh-action@v1.0.3
@@ -46,20 +42,8 @@ jobs:
           username:    esnsa
           key:         ${{ secrets.DEPLOY_SSH_KEY }}
           script_stop: true
-          script: |
-            set -e
-            echo "── Pulling latest code ──────────────────────"
-            cd /opt/esnsa
-            git pull origin master
+          script:      bash /opt/esnsa/scripts/deploy-backend.sh
 
-            echo "── Rebuilding API container ─────────────────"
-            docker compose up -d --build api
-
-            echo "── Waiting for health check ─────────────────"
-            sleep 5
-            curl -sf http://localhost:3031/api/health && echo " API healthy" || (echo " API health check failed"; exit 1)
-
-      # ── 4. Deploy frontend (npm build + copy) ────────────
       - name: Deploy frontend
         if: steps.changes.outputs.frontend == 'true' || github.event_name == 'workflow_dispatch'
         uses: appleboy/ssh-action@v1.0.3
@@ -68,41 +52,21 @@ jobs:
           username:    esnsa
           key:         ${{ secrets.DEPLOY_SSH_KEY }}
           script_stop: true
-          script: |
-            set -e
-            echo "── Building frontend ────────────────────────"
-            cd /opt/esnsa/frontend
-            npm install --prefer-offline
-            npm run build
+          script:      bash /opt/esnsa/scripts/deploy-frontend.sh
 
-            echo "── Copying to web root ──────────────────────"
-            cp -r dist/* /var/www/esnsa/dist/
-            echo " Frontend deployed"
-
-      # ── 5. Full deploy (git pull only, both unchanged) ───
-      - name: Sync code (non-backend, non-frontend changes)
+      - name: Sync non-code changes
         if: steps.changes.outputs.backend == 'false' && steps.changes.outputs.frontend == 'false'
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host:        ${{ secrets.SERVER_HOST }}
-          username:    esnsa
-          key:         ${{ secrets.DEPLOY_SSH_KEY }}
-          script: |
-            cd /opt/esnsa
-            git pull origin master
-            echo " Code synced (no rebuild needed)"
+          host:     ${{ secrets.SERVER_HOST }}
+          username: esnsa
+          key:      ${{ secrets.DEPLOY_SSH_KEY }}
+          script:   cd /opt/esnsa && git pull origin master
 
-      # ── 6. Notify result ─────────────────────────────────
-      - name: Deployment summary
+      - name: Summary
         if: always()
         run: |
-          echo "================================================"
-          echo " ESNSA Deployment Summary"
-          echo "================================================"
-          echo "  Commit : ${{ github.sha }}"
-          echo "  Branch : ${{ github.ref_name }}"
-          echo "  Trigger: ${{ github.event_name }}"
-          echo "  Backend: ${{ steps.changes.outputs.backend }}"
-          echo "  Frontend: ${{ steps.changes.outputs.frontend }}"
-          echo "  Status : ${{ job.status }}"
-          echo "================================================"
+          echo "Commit : ${{ github.sha }}"
+          echo "Status : ${{ job.status }}"
+          echo "Backend: ${{ steps.changes.outputs.backend }}"
+          echo "Frontend: ${{ steps.changes.outputs.frontend }}"
