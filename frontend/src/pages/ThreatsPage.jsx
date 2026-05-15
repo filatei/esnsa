@@ -10,12 +10,14 @@ import Modal from '../components/Modal';
 import LoadingSpinner from '../components/LoadingSpinner';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { useMobile } from '../hooks/useMobile';
 
 const TYPES = ['Pipeline Breach','Illegal Refinery','Maritime Intrusion','Pipeline Vandalism','Militant Threat','Gas Pipeline Sabotage','Bunkering','Cyber Threat'];
 const STATES = ['Abia','Akwa Ibom','Bayelsa','Borno','Cross River','Delta','Edo','Imo','Lagos','Ondo','Rivers','Sokoto','Offshore'];
 
 export default function ThreatsPage() {
   const { user } = useAuth();
+  const mobile = useMobile();
   const [threats,   setThreats]   = useState([]);
   const [selected,  setSelected]  = useState(null);
   const [loading,   setLoading]   = useState(true);
@@ -70,20 +72,22 @@ export default function ThreatsPage() {
           </select>
         </div>
 
-        <div style={{ display:'grid', gridTemplateColumns: selected ? '1fr 360px' : '1fr', gap:'12px' }}>
+        <div style={{ display:'grid', gridTemplateColumns: (!mobile && selected) ? '1fr 360px' : '1fr', gap:'12px' }}>
           <Panel title="INCIDENTS">
             {threats.length === 0
               ? <div style={{ padding:'32px', textAlign:'center', color:'var(--text-dim)', fontSize:'11px' }}>NO INCIDENTS MATCH FILTERS</div>
               : threats.map(t => <ThreatRow key={t.id} threat={t} onClick={setSelected} active={selected?.id === t.id} />)
             }
           </Panel>
-          {selected && (
-            <ThreatDetail
-              threat={selected}
-              onClose={() => setSelected(null)}
-            />
+          {!mobile && selected && (
+            <ThreatDetail threat={selected} onClose={() => setSelected(null)} />
           )}
         </div>
+        {mobile && selected && (
+          <div style={{ marginTop:'10px' }}>
+            <ThreatDetail threat={selected} onClose={() => setSelected(null)} />
+          </div>
+        )}
 
         {showAdd && (
           <Modal title="New Incident" onClose={() => setShowAdd(false)}>

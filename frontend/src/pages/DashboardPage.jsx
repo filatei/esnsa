@@ -6,6 +6,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import NigeriaMap from '../components/NigeriaMap';
 import ThreatDetail from '../components/ThreatDetail';
 import api from '../api/axios';
+import { useMobile } from '../hooks/useMobile';
 
 function MetricCard({ label, value, sub, color = 'var(--accent)' }) {
   return (
@@ -18,6 +19,7 @@ function MetricCard({ label, value, sub, color = 'var(--accent)' }) {
 }
 
 export default function DashboardPage() {
+  const mobile = useMobile();
   const [metrics,  setMetrics]  = useState(null);
   const [threats,  setThreats]  = useState([]);
   const [intel,    setIntel]    = useState([]);
@@ -55,7 +57,12 @@ export default function DashboardPage() {
     <Shell threatCount={activeCount}>
       <div className="fade-in">
         {/* Metric cards */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))', gap:'12px', marginBottom:'16px' }}>
+        <div style={{
+          display:'grid',
+          gridTemplateColumns: mobile ? 'repeat(2,1fr)' : 'repeat(auto-fit,minmax(150px,1fr))',
+          gap: mobile ? '8px' : '12px',
+          marginBottom: mobile ? '10px' : '16px',
+        }}>
           <MetricCard label="Active Threats" value={metrics?.active_threats ?? 0} color="var(--red)" />
           <MetricCard label="Production BPD" value={metrics ? (metrics.production_bpd / 1000000).toFixed(2) + 'M' : '—'} sub={`Target: ${metrics ? (metrics.target_bpd/1000000).toFixed(2)+'M' : '—'}`} color="var(--accent)" />
           <MetricCard label="Daily Loss $" value={metrics ? '$' + (metrics.daily_loss_usd / 1000000).toFixed(1) + 'M' : '—'} color="var(--yellow)" />
@@ -64,15 +71,19 @@ export default function DashboardPage() {
           <MetricCard label="Agencies Active" value={metrics?.agencies_active ?? 0} color="var(--accent)" />
         </div>
 
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 340px', gap:'12px', marginBottom:'12px' }}>
-          {/* Threat map */}
-          <Panel title="GEO-THREAT MAP" style={{ minHeight:'400px' }}>
-            <div style={{ padding:'8px', height:'400px' }}>
+        {/* Map + Intel feed */}
+        <div style={{
+          display:'grid',
+          gridTemplateColumns: mobile ? '1fr' : '1fr 340px',
+          gap: mobile ? '10px' : '12px',
+          marginBottom: mobile ? '10px' : '12px',
+        }}>
+          <Panel title="GEO-THREAT MAP" style={{ minHeight: mobile ? '280px' : '400px' }}>
+            <div style={{ padding:'8px', height: mobile ? '280px' : '400px' }}>
               <NigeriaMap threats={threats} onThreatClick={setSelected} />
             </div>
           </Panel>
 
-          {/* Intel feed */}
           <Panel title="INTELLIGENCE FEED" badge={<span style={{ fontSize:'10px', fontWeight:'600', color:'var(--text-dim)', fontFamily:'var(--font-mono)' }}>LAST 7</span>}>
             {intel.map(item => (
               <div key={item.id} style={{ padding:'10px 14px', borderBottom:'1px solid var(--border)' }}>
@@ -89,12 +100,21 @@ export default function DashboardPage() {
           </Panel>
         </div>
 
-        {/* Active incidents + selected detail */}
-        <div style={{ display:'grid', gridTemplateColumns: selected ? '1fr 360px' : '1fr', gap:'12px' }}>
+        {/* Active incidents — hide detail panel on mobile (open as full screen instead) */}
+        <div style={{
+          display:'grid',
+          gridTemplateColumns: (!mobile && selected) ? '1fr 360px' : '1fr',
+          gap:'12px',
+        }}>
           <Panel title="ACTIVE INCIDENTS">
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:'1px', background:'var(--border)' }}>
+            <div style={{
+              display:'grid',
+              gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fill,minmax(280px,1fr))',
+              gap:'1px', background:'var(--border)',
+            }}>
               {threats.filter(t => ['ACTIVE','MONITORING'].includes(t.status)).map(t => (
-                <div key={t.id} onClick={() => setSelected(t)} style={{ background:'var(--panel)', padding:'12px 14px', cursor:'pointer', transition:'background 0.1s' }}
+                <div key={t.id} onClick={() => setSelected(selected?.id === t.id ? null : t)}
+                  style={{ background:'var(--panel)', padding:'12px 14px', cursor:'pointer', transition:'background 0.1s' }}
                   onMouseEnter={e=>e.currentTarget.style.background='var(--panel-hover)'}
                   onMouseLeave={e=>e.currentTarget.style.background='var(--panel)'}>
                   <div style={{ display:'flex', gap:'6px', marginBottom:'6px', alignItems:'center' }}>
@@ -107,8 +127,15 @@ export default function DashboardPage() {
               ))}
             </div>
           </Panel>
-          {selected && <ThreatDetail threat={selected} onClose={() => setSelected(null)} />}
+          {!mobile && selected && <ThreatDetail threat={selected} onClose={() => setSelected(null)} />}
         </div>
+
+        {/* Mobile: full-width detail drawer */}
+        {mobile && selected && (
+          <div style={{ marginTop:'10px' }}>
+            <ThreatDetail threat={selected} onClose={() => setSelected(null)} />
+          </div>
+        )}
       </div>
     </Shell>
   );
