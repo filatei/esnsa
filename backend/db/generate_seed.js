@@ -4,7 +4,7 @@
  * Then: psql -U esnsa_user -d esnsa_db -f seed.sql
  */
 require('dotenv').config({ path: '../.env' });
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const fs = require('fs');
 const path = require('path');
 
