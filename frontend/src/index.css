@@ -29,9 +29,9 @@
   --text-bright:  #ffffff;
 
   /* Fonts */
-  --font-display: 'Orbitron', 'Rajdhani', sans-serif;
+  --font-display: 'Barlow', 'Inter', sans-serif;
   --font-mono:    'Space Mono', 'Courier New', monospace;
-  --font-body:    'Rajdhani', sans-serif;
+  --font-body:    'Inter', 'Barlow', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -44,6 +44,7 @@ html, body, #root {
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 500;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

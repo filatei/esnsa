@@ -42,14 +42,14 @@ export default function TopBar({ threatCount = 0, onMenuToggle }) {
         }}>⬡</div>
         <div style={{ display:'flex', flexDirection:'column', gap:'1px' }}>
           <span style={{
-            fontFamily:'var(--font-display)', fontSize:'11px', fontWeight:'700',
-            letterSpacing:'3px', color:'#ffffff', textTransform:'uppercase', lineHeight:1.3,
+            fontFamily:'var(--font-display)', fontSize:'12px', fontWeight:'800',
+            letterSpacing:'2.5px', color:'#ffffff', textTransform:'uppercase', lineHeight:1.3,
           }}>
             Office of the National Security Adviser
           </span>
           <span style={{
-            fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:'600',
-            letterSpacing:'2px', color:'var(--text-dim)', textTransform:'uppercase',
+            fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:'600',
+            letterSpacing:'1.5px', color:'var(--text-dim)', textTransform:'uppercase',
           }}>
             Directorate of Energy Security
           </span>
