@@ -29,9 +29,9 @@
   --text-bright:  #ffffff;
 
   /* Fonts */
-  --font-display: 'Cinzel', Georgia, serif;
-  --font-mono:    'Share Tech Mono', 'Courier New', monospace;
-  --font-body:    Georgia, 'Times New Roman', serif;
+  --font-display: 'Orbitron', 'Rajdhani', sans-serif;
+  --font-mono:    'Space Mono', 'Courier New', monospace;
+  --font-body:    'Rajdhani', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -41,9 +41,11 @@ html, body, #root {
   height: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 13px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -96,4 +98,19 @@ a { color: inherit; text-decoration: none; }
 /* ─── Green glow utility ────────────────────────────────── */
 .glow-green {
   box-shadow: 0 0 20px rgba(0,230,118,0.3), 0 0 60px rgba(0,230,118,0.1);
+}
+
+/* ─── Face scan animations ─────────────────────────────── */
+@keyframes scanFace {
+  0%   { top: 0%;   opacity: 0.9; }
+  50%  { opacity: 0.6; }
+  100% { top: 95%;  opacity: 0.9; }
+}
+@keyframes cornerPulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 6px #00e676; }
+  50%       { opacity: 0.5; box-shadow: 0 0 2px #00e676; }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(0,230,118,0.4), inset 0 0 20px rgba(0,230,118,0.05); }
+  50%       { box-shadow: 0 0 40px rgba(0,230,118,0.7), inset 0 0 30px rgba(0,230,118,0.1); }
 }
