@@ -1,12 +1,14 @@
 #!/bin/bash
-# Deploy backend — pull latest, install deps, rebuild API container, run migrations
+# Deploy backend — force-sync code, install deps, rebuild API, run migrations
 set -e
 
 APP=/opt/esnsa
 
-echo "── Pulling latest code ──────────────────────────"
+echo "── Syncing latest code ──────────────────────────"
 cd "$APP"
-git pull origin master
+git fetch origin master
+git reset --hard origin/master
+git clean -fd
 
 echo "── Installing backend dependencies ─────────────"
 cd "$APP/backend"
