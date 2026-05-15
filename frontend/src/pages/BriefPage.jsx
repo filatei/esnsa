@@ -59,12 +59,12 @@ export default function BriefPage() {
             <Panel title="GENERATE BRIEF">
               <div style={{ padding:'14px', display:'flex', flexDirection:'column', gap:'12px' }}>
                 <div>
-                  <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'6px', textTransform:'uppercase' }}>Brief Type</label>
+                  <label style={{ display:'block', fontSize:'11px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'6px', textTransform:'uppercase' }}>Brief Type</label>
                   <select style={selectStyle} value={briefType} onChange={e => setBriefType(e.target.value)}>
                     {BRIEF_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                   </select>
                 </div>
-                <div style={{ fontSize:'9px', color:'var(--text-dim)', lineHeight:1.6 }}>
+                <div style={{ fontSize:'11px', color:'var(--text-dim)', lineHeight:1.6 }}>
                   Claude will pull all active threats and last 24hr intel from the database and generate a classified brief.
                 </div>
                 <Btn onClick={generate} disabled={generating} style={{ width:'100%' }} color="var(--accent)">
@@ -84,7 +84,7 @@ export default function BriefPage() {
                       <Tag value={h.status} />
                     </div>
                     <div style={{ fontSize:'10px', color:'var(--text)' }}>{h.brief_type.replace(/_/g,' ')}</div>
-                    <div style={{ fontSize:'9px', color:'var(--text-dim)', marginTop:'3px' }}>{new Date(h.generated_at).toLocaleString()}</div>
+                    <div style={{ fontSize:'11px', color:'var(--text-dim)', marginTop:'3px' }}>{new Date(h.generated_at).toLocaleString()}</div>
                   </div>
                 ))}
               </div>

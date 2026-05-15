@@ -15,7 +15,7 @@ export default function Toast({ message, type = 'info', onClose }) {
       padding:'12px 16px', maxWidth:'320px',
       animation:'fadeIn 0.2s ease',
     }}>
-      <div style={{ fontSize:'9px', color, letterSpacing:'2px', marginBottom:'4px', textTransform:'uppercase' }}>{type}</div>
+      <div style={{ fontSize:'11px', color, letterSpacing:'2px', marginBottom:'4px', textTransform:'uppercase' }}>{type}</div>
       <div style={{ fontSize:'12px', color:'var(--text)' }}>{message}</div>
     </div>
   );

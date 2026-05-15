@@ -57,7 +57,7 @@ export default function MapPage() {
                     </div>
                   ))}
                   <div style={{ borderTop:'1px solid var(--border)', paddingTop:'10px', marginTop:'6px' }}>
-                    <div style={{ fontSize:'9px', color:'var(--text-dim)', marginBottom:'6px', letterSpacing:'2px' }}>STATUS</div>
+                    <div style={{ fontSize:'11px', color:'var(--text-dim)', marginBottom:'6px', letterSpacing:'2px' }}>STATUS</div>
                     {[['ACTIVE','pulsing ring'],['MONITORING','steady ring'],['CONTAINED','dot only'],['RESOLVED','dot only']].map(([s,d]) => (
                       <div key={s} style={{ marginBottom:'6px' }}>
                         <Tag value={s} />

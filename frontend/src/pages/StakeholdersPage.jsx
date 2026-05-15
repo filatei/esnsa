@@ -45,24 +45,24 @@ export default function StakeholdersPage() {
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:'8px' }}>
                 <span style={{ fontSize:'12px', color:'var(--text-bright)', fontWeight:'bold' }}>{s.name}</span>
                 {s.unread_count > 0 && (
-                  <span style={{ background:'var(--red)', color:'#fff', borderRadius:'10px', padding:'1px 6px', fontSize:'9px' }}>{s.unread_count}</span>
+                  <span style={{ background:'var(--red)', color:'#fff', borderRadius:'10px', padding:'1px 6px', fontSize:'11px' }}>{s.unread_count}</span>
                 )}
               </div>
               <div style={{ fontSize:'10px', color:'var(--text-dim)', marginBottom:'8px' }}>{s.role}</div>
               <Tag value={s.status} />
-              {s.last_contact && <div style={{ fontSize:'9px', color:'var(--text-dim)', marginTop:'6px' }}>Last: {new Date(s.last_contact).toLocaleDateString()}</div>}
+              {s.last_contact && <div style={{ fontSize:'11px', color:'var(--text-dim)', marginTop:'6px' }}>Last: {new Date(s.last_contact).toLocaleDateString()}</div>}
             </div>
           ))}
         </div>
 
-        <Panel title="RECENT COMMUNICATIONS" badge={<span style={{ fontSize:'9px', color:'var(--text-dim)' }}>{messages.length} MESSAGES</span>}>
+        <Panel title="RECENT COMMUNICATIONS" badge={<span style={{ fontSize:'11px', color:'var(--text-dim)' }}>{messages.length} MESSAGES</span>}>
           {messages.slice(0, 20).map(m => (
             <div key={m.id} style={{ padding:'12px 14px', borderBottom:'1px solid var(--border)' }}>
               <div style={{ display:'flex', gap:'6px', alignItems:'center', marginBottom:'5px' }}>
                 <Tag value={m.classification} />
                 <span style={{ fontSize:'10px', color:'var(--accent)' }}>{m.from_name}</span>
                 <span style={{ fontSize:'10px', color:'var(--text-dim)' }}>→ {m.to_stakeholder_name}</span>
-                <span style={{ fontSize:'9px', color:'var(--text-dim)', marginLeft:'auto' }}>{new Date(m.sent_at).toLocaleString()}</span>
+                <span style={{ fontSize:'11px', color:'var(--text-dim)', marginLeft:'auto' }}>{new Date(m.sent_at).toLocaleString()}</span>
               </div>
               <div style={{ fontSize:'12px', color:'var(--text-bright)', marginBottom:'4px' }}>{m.subject}</div>
               <p style={{ margin:0, fontSize:'11px', fontFamily:'var(--font-body)', color:'var(--text)', lineHeight:1.6 }}>{m.body.slice(0, 200)}{m.body.length > 200 ? '…' : ''}</p>
@@ -74,25 +74,25 @@ export default function StakeholdersPage() {
           <Modal title="Compose Message" onClose={() => setShowCompose(false)}>
             <form onSubmit={sendMsg} style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
               <div>
-                <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>To Agency</label>
+                <label style={{ display:'block', fontSize:'11px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>To Agency</label>
                 <select required style={{ ...selectStyle, width:'100%', padding:'8px' }} value={msgForm.to_stakeholder} onChange={e => setMsgForm(f => ({...f, to_stakeholder:e.target.value}))}>
                   <option value="">Select Agency</option>
                   {stakeholders.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
               </div>
               <div>
-                <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Classification</label>
+                <label style={{ display:'block', fontSize:'11px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Classification</label>
                 <select style={{ ...selectStyle, width:'100%', padding:'8px' }} value={msgForm.classification} onChange={e => setMsgForm(f => ({...f, classification:e.target.value}))}>
                   {['TOP SECRET','SECRET','CONFIDENTIAL','RESTRICTED'].map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
               </div>
               <div>
-                <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Subject</label>
+                <label style={{ display:'block', fontSize:'11px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Subject</label>
                 <input required style={{ width:'100%', background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'4px', padding:'8px', color:'var(--text)', fontSize:'12px', fontFamily:'var(--font-mono)', outline:'none' }}
                   value={msgForm.subject} onChange={e => setMsgForm(f => ({...f, subject:e.target.value}))} />
               </div>
               <div>
-                <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Message</label>
+                <label style={{ display:'block', fontSize:'11px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Message</label>
                 <textarea required rows={5} style={{ width:'100%', background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'4px', padding:'8px', color:'var(--text)', fontSize:'12px', fontFamily:'var(--font-body)', lineHeight:1.7, outline:'none', resize:'vertical' }}
                   value={msgForm.body} onChange={e => setMsgForm(f => ({...f, body:e.target.value}))} />
               </div>

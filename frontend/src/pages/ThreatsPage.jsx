@@ -97,7 +97,7 @@ export default function ThreatsPage() {
                 { label:'Loss Estimate', field:'loss_estimate', placeholder:'e.g. 12,400 bbl/day' },
               ].map(({ label, field, as, options, placeholder }) => (
                 <div key={field}>
-                  <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>{label}</label>
+                  <label style={{ display:'block', fontSize:'10px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>{label}</label>
                   {as === 'select'
                     ? <select style={{ ...selectStyle, width:'100%', padding:'8px' }} value={form[field]} onChange={e => setForm(f => ({...f, [field]:e.target.value}))}>
                         {options.map(o => <option key={o} value={o}>{o}</option>)}
@@ -108,7 +108,7 @@ export default function ThreatsPage() {
                 </div>
               ))}
               <div>
-                <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Description</label>
+                <label style={{ display:'block', fontSize:'10px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Description</label>
                 <textarea rows={3} style={{ width:'100%', background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'4px', padding:'8px', color:'var(--text)', fontSize:'12px', fontFamily:'var(--font-body)', lineHeight:1.6, outline:'none', resize:'vertical' }}
                   value={form.description} onChange={e => setForm(f => ({...f, description:e.target.value}))} />
               </div>

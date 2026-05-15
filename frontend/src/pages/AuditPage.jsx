@@ -22,10 +22,10 @@ export default function AuditPage() {
         <Panel title="AUDIT TRAIL">
           {logs.map(log => (
             <div key={log.id} style={{ padding:'10px 14px', borderBottom:'1px solid var(--border)', display:'flex', gap:'12px', alignItems:'center', flexWrap:'wrap' }}>
-              <span style={{ fontSize:'9px', color:'var(--text-dim)', width:'150px', flexShrink:0 }}>{new Date(log.created_at).toLocaleString()}</span>
+              <span style={{ fontSize:'11px', color:'var(--text-dim)', width:'150px', flexShrink:0 }}>{new Date(log.created_at).toLocaleString()}</span>
               <span style={{ color:'var(--accent)', fontSize:'10px', width:'70px', flexShrink:0 }}>{log.officer_id || '—'}</span>
               <span style={{ color:'var(--text-bright)', fontSize:'11px', flex:1 }}>{log.action}</span>
-              <span style={{ fontSize:'9px', color:'var(--text-dim)' }}>{log.ip_address}</span>
+              <span style={{ fontSize:'11px', color:'var(--text-dim)' }}>{log.ip_address}</span>
             </div>
           ))}
           {logs.length === 0 && <div style={{ padding:'32px', textAlign:'center', color:'var(--text-dim)', fontSize:'11px' }}>NO AUDIT RECORDS</div>}

@@ -64,12 +64,12 @@ export default function IntelPage() {
             <div key={item.id} style={{ padding:'14px', borderBottom:'1px solid var(--border)' }}>
               <div style={{ display:'flex', gap:'6px', alignItems:'center', marginBottom:'8px' }}>
                 <Tag value={item.classification} />
-                <span style={{ fontSize:'9px', color:'var(--accent)', letterSpacing:'1px' }}>{item.source}</span>
+                <span style={{ fontSize:'11px', color:'var(--accent)', letterSpacing:'1px' }}>{item.source}</span>
                 {item.is_actioned && <Tag value="ACTIONED" />}
-                <span style={{ fontSize:'9px', color:'var(--text-dim)', marginLeft:'auto' }}>{new Date(item.logged_at).toLocaleString()}</span>
+                <span style={{ fontSize:'11px', color:'var(--text-dim)', marginLeft:'auto' }}>{new Date(item.logged_at).toLocaleString()}</span>
               </div>
               <p style={{ margin:0, fontSize:'12px', fontFamily:'var(--font-body)', lineHeight:1.7, color:'var(--text)' }}>{item.content}</p>
-              {item.logged_by_name && <div style={{ fontSize:'9px', color:'var(--text-dim)', marginTop:'6px' }}>Logged by {item.logged_by_name}</div>}
+              {item.logged_by_name && <div style={{ fontSize:'11px', color:'var(--text-dim)', marginTop:'6px' }}>Logged by {item.logged_by_name}</div>}
             </div>
           ))}
         </Panel>
@@ -81,14 +81,14 @@ export default function IntelPage() {
                 { label:'Source', field:'source', as:'select', options:SOURCES },
               ].map(({ label, field, as, options }) => (
                 <div key={field}>
-                  <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>{label}</label>
+                  <label style={{ display:'block', fontSize:'11px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>{label}</label>
                   <select style={{ ...selectStyle, width:'100%', padding:'8px' }} value={form[field]} onChange={e => setForm(f => ({...f, [field]:e.target.value}))}>
                     {options.map(o => <option key={o} value={o}>{o}</option>)}
                   </select>
                 </div>
               ))}
               <div>
-                <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Intelligence Content</label>
+                <label style={{ display:'block', fontSize:'11px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Intelligence Content</label>
                 <textarea required rows={5} style={{ width:'100%', background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'4px', padding:'8px', color:'var(--text)', fontSize:'12px', fontFamily:'var(--font-body)', lineHeight:1.7, outline:'none', resize:'vertical' }}
                   value={form.content} onChange={e => setForm(f => ({...f, content:e.target.value}))} placeholder="Enter intelligence item..." />
               </div>

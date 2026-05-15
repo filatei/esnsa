@@ -53,7 +53,7 @@ export default function ReportsPage() {
                 <div key={r.id+'ty'} style={{ padding:'12px 14px', borderBottom:'1px solid var(--border)' }}><Tag value={r.type} /></div>
                 <div key={r.id+'s'} style={{ padding:'12px 14px', borderBottom:'1px solid var(--border)' }}><Tag value={r.status} /></div>
                 <div key={r.id+'a'} style={{ padding:'12px 14px', borderBottom:'1px solid var(--border)', fontSize:'10px', color:'var(--text-dim)' }}>{r.author_name || '—'}</div>
-                <div key={r.id+'d'} style={{ padding:'12px 14px', borderBottom:'1px solid var(--border)', fontSize:'9px', color:'var(--text-dim)' }}>{new Date(r.created_at).toLocaleDateString()}</div>
+                <div key={r.id+'d'} style={{ padding:'12px 14px', borderBottom:'1px solid var(--border)', fontSize:'11px', color:'var(--text-dim)' }}>{new Date(r.created_at).toLocaleDateString()}</div>
                 <div key={r.id+'ac'} style={{ padding:'12px 14px', borderBottom:'1px solid var(--border)' }}>
                   {r.file_path && <Btn size="small" onClick={() => download(r.id)} color="var(--blue)">DOWNLOAD</Btn>}
                 </div>
@@ -67,18 +67,18 @@ export default function ReportsPage() {
           <Modal title="Upload Document" onClose={() => setShowUpload(false)}>
             <form onSubmit={handleUpload} style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
               <div>
-                <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Title</label>
+                <label style={{ display:'block', fontSize:'11px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Title</label>
                 <input required style={{ width:'100%', background:'var(--bg)', border:'1px solid var(--border)', borderRadius:'4px', padding:'8px', color:'var(--text)', fontSize:'12px', fontFamily:'var(--font-mono)', outline:'none' }}
                   value={form.title} onChange={e => setForm(f => ({...f, title:e.target.value}))} />
               </div>
               <div>
-                <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Document Type</label>
+                <label style={{ display:'block', fontSize:'11px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>Document Type</label>
                 <select style={{ ...selectStyle, width:'100%', padding:'8px' }} value={form.type} onChange={e => setForm(f => ({...f, type:e.target.value}))}>
                   {['SITREP','ANALYTICAL','OPERATIONAL','INTELLIGENCE','EXECUTIVE','STRATEGIC'].map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
               <div>
-                <label style={{ display:'block', fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>File (PDF or DOCX)</label>
+                <label style={{ display:'block', fontSize:'11px', fontWeight:'600', fontFamily:'var(--font-mono)', letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'4px', textTransform:'uppercase' }}>File (PDF or DOCX)</label>
                 <input required type="file" accept=".pdf,.docx" onChange={e => setFile(e.target.files[0])}
                   style={{ fontSize:'11px', color:'var(--text)', fontFamily:'var(--font-mono)' }} />
               </div>

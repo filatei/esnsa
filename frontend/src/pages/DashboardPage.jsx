@@ -10,9 +10,9 @@ import api from '../api/axios';
 function MetricCard({ label, value, sub, color = 'var(--accent)' }) {
   return (
     <div style={{ background:'var(--panel)', border:`1px solid var(--border)`, borderRadius:'8px', padding:'14px 16px', borderTop:`2px solid ${color}` }}>
-      <div style={{ fontSize:'9px', letterSpacing:'2px', color:'var(--text-dim)', textTransform:'uppercase', marginBottom:'8px' }}>{label}</div>
-      <div style={{ fontSize:'22px', fontFamily:'var(--font-mono)', fontWeight:'bold', color }}>{value}</div>
-      {sub && <div style={{ fontSize:'9px', color:'var(--text-dim)', marginTop:'4px' }}>{sub}</div>}
+      <div style={{ fontSize:'10px', fontWeight:'600', letterSpacing:'1.5px', color:'var(--text-dim)', textTransform:'uppercase', marginBottom:'8px', fontFamily:'var(--font-mono)' }}>{label}</div>
+      <div style={{ fontSize:'24px', fontFamily:'var(--font-mono)', fontWeight:'bold', color, lineHeight:1 }}>{value}</div>
+      {sub && <div style={{ fontSize:'10px', fontWeight:'500', color:'var(--text-dim)', marginTop:'5px' }}>{sub}</div>}
     </div>
   );
 }
@@ -73,15 +73,15 @@ export default function DashboardPage() {
           </Panel>
 
           {/* Intel feed */}
-          <Panel title="INTELLIGENCE FEED" badge={<span style={{ fontSize:'9px', color:'var(--text-dim)' }}>LAST 7</span>}>
+          <Panel title="INTELLIGENCE FEED" badge={<span style={{ fontSize:'10px', fontWeight:'600', color:'var(--text-dim)', fontFamily:'var(--font-mono)' }}>LAST 7</span>}>
             {intel.map(item => (
               <div key={item.id} style={{ padding:'10px 14px', borderBottom:'1px solid var(--border)' }}>
-                <div style={{ display:'flex', gap:'6px', marginBottom:'5px' }}>
+                <div style={{ display:'flex', gap:'6px', marginBottom:'5px', alignItems:'center' }}>
                   <Tag value={item.classification} />
-                  <span style={{ fontSize:'9px', color:'var(--text-dim)' }}>{item.source}</span>
+                  <span style={{ fontSize:'10px', fontWeight:'600', color:'var(--text-dim)', fontFamily:'var(--font-mono)' }}>{item.source}</span>
                 </div>
-                <p style={{ margin:0, fontSize:'11px', fontFamily:'var(--font-body)', lineHeight:1.6, color:'var(--text)' }}>{item.content}</p>
-                <div style={{ fontSize:'9px', color:'var(--text-dim)', marginTop:'5px' }}>
+                <p style={{ margin:0, fontSize:'12px', fontWeight:'500', fontFamily:'var(--font-body)', lineHeight:1.65, color:'#e8f5ee' }}>{item.content}</p>
+                <div style={{ fontSize:'10px', color:'var(--text-dim)', marginTop:'5px', fontFamily:'var(--font-mono)' }}>
                   {new Date(item.logged_at).toLocaleString()}
                 </div>
               </div>
@@ -97,12 +97,12 @@ export default function DashboardPage() {
                 <div key={t.id} onClick={() => setSelected(t)} style={{ background:'var(--panel)', padding:'12px 14px', cursor:'pointer', transition:'background 0.1s' }}
                   onMouseEnter={e=>e.currentTarget.style.background='var(--panel-hover)'}
                   onMouseLeave={e=>e.currentTarget.style.background='var(--panel)'}>
-                  <div style={{ display:'flex', gap:'6px', marginBottom:'6px' }}>
-                    <span style={{ fontSize:'10px', color:'var(--accent)' }}>{t.incident_id}</span>
+                  <div style={{ display:'flex', gap:'6px', marginBottom:'6px', alignItems:'center' }}>
+                    <span style={{ fontSize:'11px', fontWeight:'700', color:'var(--accent)', fontFamily:'var(--font-mono)', letterSpacing:'1px' }}>{t.incident_id}</span>
                     <Tag value={t.severity} /><Tag value={t.status} />
                   </div>
-                  <div style={{ fontSize:'12px', color:'var(--text-bright)', marginBottom:'4px' }}>{t.type}</div>
-                  <div style={{ fontSize:'10px', color:'var(--text-dim)' }}>{t.location}</div>
+                  <div style={{ fontSize:'13px', fontWeight:'600', color:'#ffffff', marginBottom:'4px', letterSpacing:'0.3px' }}>{t.type}</div>
+                  <div style={{ fontSize:'11px', fontWeight:'500', color:'var(--text-dim)', fontFamily:'var(--font-mono)' }}>{t.location}</div>
                 </div>
               ))}
             </div>

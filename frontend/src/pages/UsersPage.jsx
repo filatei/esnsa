@@ -29,7 +29,7 @@ export default function UsersPage() {
               <Tag value={u.role} />
               <Tag value={u.clearance} />
               <Tag value={u.is_active ? 'ACTIVE' : 'INACTIVE'} />
-              <span style={{ fontSize:'9px', color:'var(--text-dim)', minWidth:'120px' }}>
+              <span style={{ fontSize:'11px', color:'var(--text-dim)', minWidth:'120px' }}>
                 {u.last_login ? `Last: ${new Date(u.last_login).toLocaleDateString()}` : 'Never logged in'}
               </span>
             </div>
