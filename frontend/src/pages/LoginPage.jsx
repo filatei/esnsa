@@ -6,10 +6,8 @@ import { Fingerprint, KeyRound, ShieldCheck, CheckCircle2, Camera } from 'lucide
 import { startAuthentication, startRegistration } from '@simplewebauthn/browser';
 import api from '../api/axios';
 
-/* ─────────────────────────────────────────────────────────
-   Camera — mobile-safe constraints, graceful error messages
-───────────────────────────────────────────────────────── */
-function CameraView({ scanPhase, status, compact = false }) {
+/* ─── Camera ──────────────────────────────────────────── */
+function CameraView({ scanPhase, status }) {
   const videoRef  = useRef(null);
   const streamRef = useRef(null);
   const [ready,    setReady]    = useState(false);
@@ -27,7 +25,7 @@ function CameraView({ scanPhase, status, compact = false }) {
     }).catch(err => {
       setCamError(
         err.name==='NotAllowedError' ? 'CAMERA PERMISSION DENIED'
-        : err.name==='NotFoundError' ? 'NO CAMERA FOUND ON THIS DEVICE'
+        : err.name==='NotFoundError' ? 'NO CAMERA FOUND'
         : 'CAMERA UNAVAILABLE'
       );
     });
@@ -39,75 +37,69 @@ function CameraView({ scanPhase, status, compact = false }) {
   }, []);
 
   if (camError) return (
-    <div style={{ height: compact ? '150px' : '195px',
-      display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
-      background:'#030508', border:'1px solid #1a3d28', borderRadius:'8px',
-      color:'#d63a3a', fontSize:'11px', letterSpacing:'1px', gap:'8px', padding:'16px',
-      textAlign:'center', fontFamily:'var(--font-mono)' }}>
-      <Camera size={26} color="#d63a3a"/>
+    <div style={{ height:'220px', display:'flex', flexDirection:'column', alignItems:'center',
+      justifyContent:'center', background:'#030508', border:'1px solid #1a3d28',
+      borderRadius:'10px', color:'#d63a3a', fontSize:'13px', letterSpacing:'1px',
+      gap:'10px', padding:'20px', textAlign:'center', fontFamily:'var(--font-mono)' }}>
+      <Camera size={30} color="#d63a3a"/>
       <span>{camError}</span>
     </div>
   );
 
   const scanning = scanPhase === 'scanning';
   const done     = scanPhase === 'done' || status === 'granted';
-  const h        = compact ? '168px' : '200px';
 
   return (
     <div style={{
-      position:'relative', borderRadius:'8px', overflow:'hidden',
+      position:'relative', borderRadius:'10px', overflow:'hidden',
       border: done ? '2px solid #00e676' : '1px solid #1a3d28',
       animation: scanning ? 'glowPulse 1.2s ease-in-out infinite' : 'none',
-      boxShadow: done ? '0 0 36px rgba(0,230,118,0.5)' : scanning ? '0 0 18px rgba(0,230,118,0.22)' : 'none',
+      boxShadow: done ? '0 0 40px rgba(0,230,118,0.5)' : scanning ? '0 0 20px rgba(0,230,118,0.25)' : 'none',
       background:'#000',
     }}>
       <video ref={videoRef} autoPlay playsInline muted
-        style={{ width:'100%', height:h, objectFit:'cover', display:'block',
+        style={{ width:'100%', height:'240px', objectFit:'cover', display:'block',
           transform:'scaleX(-1)', opacity: ready ? 1 : 0, transition:'opacity 0.4s' }}/>
       {!ready && (
         <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center',
           justifyContent:'center', background:'#030508', color:'var(--text-dim)',
-          fontSize:'10px', letterSpacing:'2px', fontFamily:'var(--font-mono)' }}>
+          fontSize:'12px', letterSpacing:'2px', fontFamily:'var(--font-mono)' }}>
           INITIALISING CAMERA...
         </div>
       )}
-      {[{top:8,left:8},{top:8,right:8},{bottom:8,left:8},{bottom:8,right:8}].map((pos,i) => (
+      {[{top:10,left:10},{top:10,right:10},{bottom:10,left:10},{bottom:10,right:10}].map((pos,i) => (
         <div key={i} style={{
-          position:'absolute', width:'18px', height:'18px',
-          borderTop:    i < 2  ? '2px solid #00e676' : 'none',
-          borderBottom: i >= 2 ? '2px solid #00e676' : 'none',
+          position:'absolute', width:'22px', height:'22px',
+          borderTop:    i<2  ? '2px solid #00e676' : 'none',
+          borderBottom: i>=2 ? '2px solid #00e676' : 'none',
           borderLeft:   (i===0||i===2) ? '2px solid #00e676' : 'none',
           borderRight:  (i===1||i===3) ? '2px solid #00e676' : 'none',
           animation:'cornerPulse 2s ease-in-out infinite', ...pos,
         }}/>
       ))}
       <div style={{
-        position:'absolute', top:'50%', left:'50%',
-        transform:'translate(-50%,-50%)',
-        width:'90px', height:'120px', borderRadius:'50%',
+        position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)',
+        width:'110px', height:'140px', borderRadius:'50%',
         border:`2px solid ${done ? '#00e676' : 'rgba(0,230,118,0.35)'}`,
-        boxShadow: done ? '0 0 18px rgba(0,230,118,0.6)' : 'none',
-        pointerEvents:'none',
+        boxShadow: done ? '0 0 20px rgba(0,230,118,0.6)' : 'none', pointerEvents:'none',
       }}/>
       {scanning && (
-        <div style={{
-          position:'absolute', left:0, right:0, height:'2px',
+        <div style={{ position:'absolute', left:0, right:0, height:'2px',
           background:'linear-gradient(to right,transparent,#00e676,#69ff47,#00e676,transparent)',
-          animation:'scanFace 1.4s linear infinite', boxShadow:'0 0 8px #00e676',
-        }}/>
+          animation:'scanFace 1.4s linear infinite', boxShadow:'0 0 8px #00e676' }}/>
       )}
       {done && (
         <div style={{ position:'absolute', inset:0, display:'flex', flexDirection:'column',
-          alignItems:'center', justifyContent:'center', gap:'8px',
+          alignItems:'center', justifyContent:'center', gap:'12px',
           background:'rgba(0,230,118,0.08)' }}>
-          <CheckCircle2 size={40} color='#00e676' style={{ filter:'drop-shadow(0 0 10px #00e676)' }}/>
-          <span style={{ color:'#00e676', fontFamily:'var(--font-mono)', fontSize:'11px',
+          <CheckCircle2 size={52} color='#00e676' style={{ filter:'drop-shadow(0 0 12px #00e676)' }}/>
+          <span style={{ color:'#00e676', fontFamily:'var(--font-mono)', fontSize:'13px',
             letterSpacing:'3px', textShadow:'0 0 8px #00e676' }}>FACE VERIFIED</span>
         </div>
       )}
       {!done && (
-        <div style={{ position:'absolute', bottom:'7px', left:0, right:0, textAlign:'center' }}>
-          <span style={{ fontSize:'9px', letterSpacing:'2px', color:'rgba(0,230,118,0.65)',
+        <div style={{ position:'absolute', bottom:'10px', left:0, right:0, textAlign:'center' }}>
+          <span style={{ fontSize:'11px', letterSpacing:'2px', color:'rgba(0,230,118,0.65)',
             fontFamily:'var(--font-mono)', textShadow:'0 0 5px #00e676' }}>
             {scanning ? '● SCANNING...' : 'ALIGN FACE IN FRAME'}
           </span>
@@ -117,14 +109,11 @@ function CameraView({ scanPhase, status, compact = false }) {
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   Register Face — shown right after password login succeeds
-───────────────────────────────────────────────────────── */
+/* ─── Register Face (post-login) ─────────────────────── */
 function RegisterFaceScreen({ onDone, onSkip }) {
   const [scanPhase, setScanPhase] = useState('idle');
   const [status,    setStatus]    = useState('idle');
   const [error,     setError]     = useState('');
-  const mobile = useMobile();
 
   const handleRegister = async () => {
     setScanPhase('scanning'); setError('');
@@ -139,74 +128,66 @@ function RegisterFaceScreen({ onDone, onSkip }) {
     } catch (err) {
       setScanPhase('idle'); setStatus('failed');
       const msg = err.response?.data?.error || err.message || '';
-      setError(
-        msg.includes('timed out') || msg.includes('not allowed') ? 'SCAN CANCELLED — TRY AGAIN'
-        : msg || 'REGISTRATION FAILED'
-      );
+      setError(msg.includes('timed out') || msg.includes('not allowed') ? 'SCAN CANCELLED — TRY AGAIN' : msg || 'REGISTRATION FAILED');
       setTimeout(() => setStatus('idle'), 3000);
     }
   };
 
   return (
     <div style={{ minHeight:'100vh', background:'#030508', display:'flex',
-      alignItems:'center', justifyContent:'center', padding: mobile ? '12px' : '20px' }}>
-      <div style={{ width:'100%', maxWidth:'400px', animation:'fadeIn 0.35s ease' }}>
-
-        <div style={{ textAlign:'center', marginBottom:'18px' }}>
-          <div style={{ width:'52px', height:'52px', borderRadius:'50%',
+      alignItems:'center', justifyContent:'center', padding:'20px' }}>
+      <div style={{ width:'100%', maxWidth:'560px', animation:'fadeIn 0.35s ease' }}>
+        <div style={{ textAlign:'center', marginBottom:'24px' }}>
+          <div style={{ width:'72px', height:'72px', borderRadius:'50%',
             background:'rgba(0,230,118,0.1)', border:'2px solid #00e676',
             display:'flex', alignItems:'center', justifyContent:'center',
-            margin:'0 auto 12px', boxShadow:'0 0 22px rgba(0,230,118,0.35)' }}>
-            <Fingerprint size={24} color="#00e676"/>
+            margin:'0 auto 16px', boxShadow:'0 0 30px rgba(0,230,118,0.4)' }}>
+            <Fingerprint size={32} color="#00e676"/>
           </div>
-          <div style={{ fontFamily:'var(--font-display)', fontSize:'16px', fontWeight:'800',
-            letterSpacing:'2px', color:'#ffffff', textTransform:'uppercase', marginBottom:'5px' }}>
+          <div style={{ fontFamily:'var(--font-display)', fontSize:'22px', fontWeight:'800',
+            letterSpacing:'2px', color:'#ffffff', textTransform:'uppercase', marginBottom:'8px' }}>
             Register Face ID
           </div>
-          <div style={{ fontSize:'12px', color:'var(--text-dim)' }}>
-            Log in with your face next time — or skip to use password only
+          <div style={{ fontSize:'14px', fontWeight:'600', color:'var(--text-dim)' }}>
+            Set up biometric login — or skip to use password only
           </div>
         </div>
 
-        <div style={{ background:'#080d0b', border:'1px solid #1a3d28', borderRadius:'10px',
-          padding: mobile ? '16px' : '20px', boxShadow:'0 0 28px rgba(0,230,118,0.06)' }}>
-
-          <CameraView scanPhase={scanPhase} status={status} compact={mobile}/>
-
+        <div style={{ background:'#080d0b', border:'1px solid #1a3d28', borderRadius:'12px',
+          padding:'28px', boxShadow:'0 0 40px rgba(0,230,118,0.07)' }}>
+          <CameraView scanPhase={scanPhase} status={status}/>
           {error && (
-            <div style={{ marginTop:'12px', background:'rgba(214,58,58,0.1)',
-              border:'1px solid rgba(214,58,58,0.4)', borderRadius:'6px',
-              padding:'10px 14px', fontSize:'11px', color:'#d63a3a',
+            <div style={{ marginTop:'14px', background:'rgba(214,58,58,0.1)',
+              border:'1px solid rgba(214,58,58,0.4)', borderRadius:'8px',
+              padding:'12px 16px', fontSize:'12px', color:'#d63a3a',
               letterSpacing:'1px', fontFamily:'var(--font-mono)' }}>⚠ {error}</div>
           )}
-
-          <div style={{ display:'flex', flexDirection:'column', gap:'10px', marginTop:'14px' }}>
+          <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginTop:'18px' }}>
             <button onClick={handleRegister}
               disabled={scanPhase==='scanning'||status==='granted'}
               style={{
-                background:'rgba(0,230,118,0.12)', border:'1px solid #00e676', borderRadius:'8px',
-                padding:'16px', color:'#00e676', fontFamily:'var(--font-display)',
-                fontSize:'13px', fontWeight:'800', letterSpacing:'2px',
+                background:'rgba(0,230,118,0.12)', border:'1px solid #00e676', borderRadius:'10px',
+                padding:'20px', color:'#00e676', fontFamily:'var(--font-display)',
+                fontSize:'16px', fontWeight:'800', letterSpacing:'2px',
                 cursor: scanPhase==='scanning' ? 'wait' : 'pointer',
-                display:'flex', alignItems:'center', justifyContent:'center', gap:'10px',
-                boxShadow:'0 0 14px rgba(0,230,118,0.2)', minHeight:'52px',
-                WebkitTapHighlightColor:'transparent',
+                display:'flex', alignItems:'center', justifyContent:'center', gap:'12px',
+                boxShadow:'0 0 18px rgba(0,230,118,0.2)', minHeight:'60px',
+                WebkitTapHighlightColor:'transparent', textTransform:'uppercase',
               }}>
-              <Fingerprint size={20}/>
+              <Fingerprint size={22}/>
               {scanPhase==='scanning' ? 'SCANNING...' : status==='granted' ? '✓ REGISTERED' : 'REGISTER MY FACE'}
             </button>
             <button onClick={onSkip} style={{
-              background:'transparent', border:'1px solid #0f2018', borderRadius:'8px',
-              color:'#5a7a68', padding:'14px', fontFamily:'var(--font-mono)',
-              fontSize:'11px', letterSpacing:'1.5px', cursor:'pointer',
-              WebkitTapHighlightColor:'transparent', minHeight:'46px',
+              background:'transparent', border:'1px solid #0f2018', borderRadius:'10px',
+              color:'var(--text-dim)', padding:'16px', fontFamily:'var(--font-mono)',
+              fontSize:'12px', fontWeight:'700', letterSpacing:'2px', cursor:'pointer',
+              WebkitTapHighlightColor:'transparent', minHeight:'50px',
             }}>
               SKIP — USE PASSWORD ONLY
             </button>
           </div>
         </div>
-
-        <div style={{ textAlign:'center', marginTop:'10px', fontSize:'9px',
+        <div style={{ textAlign:'center', marginTop:'14px', fontSize:'11px',
           color:'#1a3d28', letterSpacing:'1px', fontFamily:'var(--font-mono)' }}>
           Biometric data stays on this device · Never transmitted
         </div>
@@ -215,13 +196,12 @@ function RegisterFaceScreen({ onDone, onSkip }) {
   );
 }
 
-/* ─────────────────────────────────────────────────────────
-   Main LoginPage
-───────────────────────────────────────────────────────── */
+/* ─── Main LoginPage ─────────────────────────────────── */
 export default function LoginPage() {
   const { login, loginWithToken } = useAuth();
   const navigate = useNavigate();
   const mobile   = useMobile();
+  const tablet   = useMobile(1024); // true below 1024px
 
   const [authMode,   setAuthMode]   = useState('password');
   const [officerId,  setOfficerId]  = useState('DIR001');
@@ -283,20 +263,35 @@ export default function LoginPage() {
   const accentColor = status==='granted' ? '#00e676' : status==='failed' ? '#d63a3a' : '#00e676';
   const accentBg    = status==='granted' ? 'rgba(0,230,118,0.18)' : status==='failed' ? 'rgba(214,58,58,0.15)' : 'rgba(0,230,118,0.12)';
 
-  /* 16px input font prevents iOS auto-zoom on focus */
+  /* Responsive sizing */
+  const cardWidth  = mobile ? '100%'  : tablet ? '560px' : '600px';
+  const logoSize   = mobile ? 64      : tablet ? 80      : 90;
+  const iconSize   = mobile ? 28      : tablet ? 34      : 40;
+  const titleSize  = mobile ? '15px'  : tablet ? '19px'  : '22px';
+  const subSize    = mobile ? '11px'  : tablet ? '13px'  : '14px';
+  const labelSize  = mobile ? '12px'  : '13px';
+  const btnFontSz  = mobile ? '14px'  : '16px';
+  const btnPad     = mobile ? '17px'  : '21px';
+  const cardPad    = mobile ? '18px'  : tablet ? '28px'  : '34px';
+
+  /* 16px keeps iOS from zooming on focus */
   const inputStyle = {
     width:'100%', background:'rgba(0,230,118,0.04)', border:'1px solid #1a3d28',
-    borderRadius:'6px', padding:'13px 14px', color:'#ffffff', fontSize:'16px',
-    fontFamily:'var(--font-mono)', outline:'none', boxSizing:'border-box',
-    letterSpacing:'2px', fontWeight:'700', transition:'border-color 0.2s, box-shadow 0.2s',
+    borderRadius:'8px', padding: mobile ? '14px 16px' : '16px 18px',
+    color:'#ffffff', fontSize:'16px', fontFamily:'var(--font-mono)',
+    outline:'none', boxSizing:'border-box', letterSpacing:'2px', fontWeight:'700',
+    transition:'border-color 0.2s, box-shadow 0.2s',
     WebkitAppearance:'none', appearance:'none',
   };
 
   return (
-    <div style={{ minHeight:'100vh', background:'#030508', display:'flex',
-      alignItems:'center', justifyContent:'center',
-      padding: mobile ? '10px' : '20px', position:'relative', overflow:'hidden' }}>
-
+    <div style={{
+      minHeight:'100vh', background:'#030508',
+      display:'flex', alignItems:'center', justifyContent:'center',
+      padding: mobile ? '12px' : '24px',
+      position:'relative', overflow:'hidden',
+    }}>
+      {/* Background grid */}
       <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%',
         opacity:0.04, pointerEvents:'none' }}>
         {Array.from({length:20},(_,i)=><line key={`h${i}`} x1="0" y1={`${i*5}%`} x2="100%" y2={`${i*5}%`} stroke="#00e676" strokeWidth="0.5"/>)}
@@ -304,62 +299,76 @@ export default function LoginPage() {
       </svg>
       <div style={{ position:'absolute', left:0, right:0, height:'1px', pointerEvents:'none',
         background:'linear-gradient(to right,transparent,#00e676,transparent)',
-        opacity:0.22, animation:'scandown 4s linear infinite' }}/>
+        opacity:0.2, animation:'scandown 4s linear infinite' }}/>
 
-      <div style={{ width:'100%', maxWidth:'420px', animation:'fadeIn 0.4s ease' }}>
+      <div style={{ width:'100%', maxWidth: cardWidth, animation:'fadeIn 0.4s ease' }}>
 
-        {/* Header */}
-        <div style={{ textAlign:'center', marginBottom: mobile ? '16px' : '26px' }}>
+        {/* ── Header ── */}
+        <div style={{ textAlign:'center', marginBottom: mobile ? '20px' : '32px' }}>
           <div style={{
-            width: mobile ? '54px' : '68px', height: mobile ? '54px' : '68px',
-            borderRadius:'50%', background:'rgba(0,230,118,0.1)', border:'2px solid #00e676',
+            width:`${logoSize}px`, height:`${logoSize}px`, borderRadius:'50%',
+            background:'rgba(0,230,118,0.1)', border:'2px solid #00e676',
             display:'flex', alignItems:'center', justifyContent:'center',
-            margin:'0 auto', marginBottom: mobile ? '10px' : '14px',
-            boxShadow:'0 0 28px rgba(0,230,118,0.42), 0 0 60px rgba(0,230,118,0.1)',
+            margin:'0 auto', marginBottom: mobile ? '14px' : '20px',
+            boxShadow:'0 0 36px rgba(0,230,118,0.45), 0 0 80px rgba(0,230,118,0.12)',
           }}>
-            <ShieldCheck size={mobile ? 26 : 32} color="#00e676"/>
+            <ShieldCheck size={iconSize} color="#00e676"/>
           </div>
-          <div style={{ fontFamily:'var(--font-display)', fontSize: mobile ? '10px' : '11px',
-            fontWeight:'800', letterSpacing: mobile ? '2px' : '3.5px',
-            color:'#ffffff', textTransform:'uppercase', lineHeight:1.7 }}>
+          <div style={{
+            fontFamily:'var(--font-display)', fontWeight:'800',
+            fontSize: titleSize,
+            letterSpacing: mobile ? '2px' : '3px',
+            color:'#ffffff', textTransform:'uppercase', lineHeight:1.3,
+            marginBottom:'6px',
+          }}>
             Office of the National Security Adviser
           </div>
-          <div style={{ fontSize: mobile ? '9px' : '10px', letterSpacing:'2.5px',
-            color:'var(--text-dim)', textTransform:'uppercase', marginTop:'2px' }}>
+          <div style={{
+            fontFamily:'var(--font-mono)', fontWeight:'700',
+            fontSize: subSize,
+            letterSpacing: mobile ? '2px' : '3px',
+            color:'var(--text-dim)', textTransform:'uppercase',
+          }}>
             Directorate of Energy Security
           </div>
         </div>
 
-        {/* Card */}
-        <div style={{ background:'#080d0b', border:'1px solid #1a3d28', borderRadius:'10px',
-          overflow:'hidden', boxShadow:'0 0 28px rgba(0,230,118,0.06)' }}>
+        {/* ── Card ── */}
+        <div style={{
+          background:'#080d0b', border:'1px solid #1a3d28', borderRadius:'12px',
+          overflow:'hidden', boxShadow:'0 0 40px rgba(0,230,118,0.07)',
+        }}>
 
-          {/* Tabs */}
+          {/* Card header + tabs */}
           <div style={{ background:'#060b08', borderBottom:'1px solid #0f2018',
-            padding:'10px 14px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:'7px' }}>
-              <span style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#00e676',
-                display:'inline-block', boxShadow:'0 0 5px #00e676', flexShrink:0 }}/>
-              <span style={{ fontSize:'10px', fontWeight:'600', letterSpacing:'1.5px',
-                color:'var(--text-dim)', fontFamily:'var(--font-mono)' }}>
+            padding: mobile ? '12px 16px' : '14px 20px',
+            display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
+              <span style={{ width:'8px', height:'8px', borderRadius:'50%', background:'#00e676',
+                display:'inline-block', boxShadow:'0 0 6px #00e676', flexShrink:0 }}/>
+              <span style={{
+                fontSize: mobile ? '11px' : '12px', fontWeight:'700', letterSpacing:'1.5px',
+                color:'var(--text-dim)', fontFamily:'var(--font-mono)',
+              }}>
                 AUTHENTICATION REQUIRED
               </span>
             </div>
             {biometricAvailable && (
-              <div style={{ display:'flex', gap:'4px' }}>
+              <div style={{ display:'flex', gap:'6px' }}>
                 {[['password','PASSWORD',KeyRound],['biometric','FACE ID',Fingerprint]].map(([m,label,Icon])=>(
                   <button key={m}
                     onClick={()=>{setAuthMode(m);setError('');setStatus('idle');setScanPhase('idle');}}
                     style={{
                       background: authMode===m ? 'rgba(0,230,118,0.15)' : 'transparent',
                       border:`1px solid ${authMode===m ? '#00e676' : '#1a3d28'}`,
-                      borderRadius:'4px', padding:'5px 10px', cursor:'pointer',
-                      color: authMode===m ? '#00e676' : 'var(--text-dim)',
-                      fontSize:'9px', fontFamily:'var(--font-mono)', letterSpacing:'1px',
-                      display:'flex', alignItems:'center', gap:'4px',
-                      minHeight:'32px', WebkitTapHighlightColor:'transparent',
+                      borderRadius:'6px', padding: mobile ? '6px 12px' : '7px 14px',
+                      cursor:'pointer', color: authMode===m ? '#00e676' : 'var(--text-dim)',
+                      fontSize: mobile ? '10px' : '11px', fontFamily:'var(--font-mono)',
+                      fontWeight:'700', letterSpacing:'1px',
+                      display:'flex', alignItems:'center', gap:'5px',
+                      minHeight:'34px', WebkitTapHighlightColor:'transparent',
                     }}>
-                    <Icon size={10}/>{label}
+                    <Icon size={11}/>{label}
                   </button>
                 ))}
               </div>
@@ -369,21 +378,21 @@ export default function LoginPage() {
           {/* PASSWORD */}
           {authMode === 'password' ? (
             <form onSubmit={handlePasswordSubmit}
-              style={{ padding: mobile ? '16px' : '22px 22px 24px',
-                display:'flex', flexDirection:'column', gap:'14px' }}>
+              style={{ padding: cardPad, display:'flex', flexDirection:'column',
+                gap: mobile ? '16px' : '20px' }}>
               <div>
-                <label style={{ display:'block', fontSize:'11px', fontWeight:'600',
-                  letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'8px',
-                  fontFamily:'var(--font-mono)' }}>OFFICER ID</label>
+                <label style={{ display:'block', fontSize: labelSize, fontWeight:'700',
+                  letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'10px',
+                  fontFamily:'var(--font-mono)', textTransform:'uppercase' }}>Officer ID</label>
                 <input className="login-input" value={officerId}
                   onChange={e=>setOfficerId(e.target.value.toUpperCase())}
                   style={inputStyle} placeholder="DIR001"
                   autoComplete="username" autoCapitalize="characters"/>
               </div>
               <div>
-                <label style={{ display:'block', fontSize:'11px', fontWeight:'600',
-                  letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'8px',
-                  fontFamily:'var(--font-mono)' }}>ACCESS CODE</label>
+                <label style={{ display:'block', fontSize: labelSize, fontWeight:'700',
+                  letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'10px',
+                  fontFamily:'var(--font-mono)', textTransform:'uppercase' }}>Access Code</label>
                 <input className="login-input" type="password" value={password}
                   onChange={e=>setPassword(e.target.value)}
                   style={inputStyle} placeholder="••••••••"
@@ -391,18 +400,19 @@ export default function LoginPage() {
               </div>
               {error && (
                 <div style={{ background:'rgba(214,58,58,0.1)', border:'1px solid rgba(214,58,58,0.5)',
-                  borderRadius:'6px', padding:'11px 14px', fontSize:'11px', color:'#d63a3a',
-                  letterSpacing:'1px', fontFamily:'var(--font-mono)' }}>⚠ {error}</div>
+                  borderRadius:'8px', padding:'14px 16px', fontSize:'13px', color:'#d63a3a',
+                  letterSpacing:'1px', fontFamily:'var(--font-mono)', fontWeight:'700' }}>⚠ {error}</div>
               )}
               <button type="submit"
                 disabled={status==='verifying'||status==='granted'}
                 style={{
-                  background:accentBg, border:`1px solid ${accentColor}`,
-                  borderRadius:'8px', padding:'16px', width:'100%', color:accentColor,
-                  fontFamily:'var(--font-display)', fontSize:'13px', fontWeight:'900',
-                  letterSpacing:'3px', cursor:(status==='verifying'||status==='granted')?'wait':'pointer',
-                  transition:'all 0.2s', minHeight:'52px',
-                  boxShadow: status!=='failed' ? '0 0 18px rgba(0,230,118,0.22)' : 'none',
+                  background: accentBg, border:`1px solid ${accentColor}`,
+                  borderRadius:'10px', padding: btnPad, width:'100%', color: accentColor,
+                  fontFamily:'var(--font-display)', fontSize: btnFontSz,
+                  fontWeight:'900', letterSpacing:'3px', textTransform:'uppercase',
+                  cursor:(status==='verifying'||status==='granted')?'wait':'pointer',
+                  transition:'all 0.2s', minHeight: mobile ? '56px' : '64px',
+                  boxShadow: status!=='failed' ? '0 0 24px rgba(0,230,118,0.25)' : 'none',
                   WebkitTapHighlightColor:'transparent',
                 }}>
                 {status==='verifying' ? 'VERIFYING...'
@@ -413,37 +423,37 @@ export default function LoginPage() {
             </form>
           ) : (
             /* FACE ID */
-            <div style={{ padding: mobile ? '14px' : '18px 22px 22px',
-              display:'flex', flexDirection:'column', gap:'12px' }}>
+            <div style={{ padding: cardPad, display:'flex', flexDirection:'column',
+              gap: mobile ? '14px' : '18px' }}>
               <div>
-                <label style={{ display:'block', fontSize:'11px', fontWeight:'600',
-                  letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'8px',
-                  fontFamily:'var(--font-mono)' }}>OFFICER ID</label>
+                <label style={{ display:'block', fontSize: labelSize, fontWeight:'700',
+                  letterSpacing:'1.5px', color:'var(--text-dim)', marginBottom:'10px',
+                  fontFamily:'var(--font-mono)', textTransform:'uppercase' }}>Officer ID</label>
                 <input className="login-input" value={officerId}
                   onChange={e=>setOfficerId(e.target.value.toUpperCase())}
                   style={inputStyle} placeholder="DIR001"
                   autoComplete="username" autoCapitalize="characters"/>
               </div>
-              <CameraView scanPhase={scanPhase} status={status} compact={mobile}/>
+              <CameraView scanPhase={scanPhase} status={status}/>
               {error && (
                 <div style={{ background:'rgba(214,58,58,0.1)', border:'1px solid rgba(214,58,58,0.5)',
-                  borderRadius:'6px', padding:'10px 14px', fontSize:'11px', color:'#d63a3a',
-                  letterSpacing:'1px', fontFamily:'var(--font-mono)' }}>⚠ {error}</div>
+                  borderRadius:'8px', padding:'14px 16px', fontSize:'13px', color:'#d63a3a',
+                  letterSpacing:'1px', fontFamily:'var(--font-mono)', fontWeight:'700' }}>⚠ {error}</div>
               )}
               <button onClick={handleFaceScan}
                 disabled={scanPhase==='scanning'||status==='granted'}
                 style={{
-                  background:accentBg, border:`1px solid ${accentColor}`,
-                  borderRadius:'8px', padding:'16px', width:'100%', color:accentColor,
-                  fontFamily:'var(--font-display)', fontSize:'13px', fontWeight:'900',
-                  letterSpacing:'3px',
+                  background: accentBg, border:`1px solid ${accentColor}`,
+                  borderRadius:'10px', padding: btnPad, width:'100%', color: accentColor,
+                  fontFamily:'var(--font-display)', fontSize: btnFontSz,
+                  fontWeight:'900', letterSpacing:'3px', textTransform:'uppercase',
                   cursor:(scanPhase==='scanning'||status==='granted')?'wait':'pointer',
-                  display:'flex', alignItems:'center', justifyContent:'center', gap:'10px',
-                  minHeight:'52px',
-                  boxShadow: status!=='failed' ? '0 0 18px rgba(0,230,118,0.22)' : 'none',
+                  display:'flex', alignItems:'center', justifyContent:'center', gap:'12px',
+                  minHeight: mobile ? '56px' : '64px',
+                  boxShadow: status!=='failed' ? '0 0 24px rgba(0,230,118,0.25)' : 'none',
                   WebkitTapHighlightColor:'transparent',
                 }}>
-                <Fingerprint size={20}/>
+                <Fingerprint size={22}/>
                 {scanPhase==='scanning' ? 'SCANNING...'
                   : status==='granted'  ? '✓ ACCESS GRANTED'
                   : 'SCAN FACE'}
@@ -452,8 +462,8 @@ export default function LoginPage() {
           )}
         </div>
 
-        <div style={{ textAlign:'center', marginTop:'12px', fontSize:'9px',
-          color:'#1a3d28', letterSpacing:'1px', fontFamily:'var(--font-mono)' }}>
+        <div style={{ textAlign:'center', marginTop:'16px', fontSize:'10px',
+          color:'#1a3d28', letterSpacing:'1.5px', fontFamily:'var(--font-mono)', fontWeight:'700' }}>
           ONSA/ES/OPS · CLASSIFIED · esnsa.torama.money
         </div>
       </div>
